@@ -8,19 +8,22 @@ import { auth } from "./firebaseConfig";
 import logo from "/untitled.svg";
 
 function App() {
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(
+    localStorage.getItem("isAuth") === "true"
+  );
 
+  // Function to handle logout
   const signUserOut = () => {
     signOut(auth).then(() => {
       console.log("signed out");
-      localStorage.clear();
+      localStorage.removeItem("isAuth");
       setIsAuth(false);
       window.location.pathname = "/";
     });
   };
   return (
     <Router>
-      <nav className="px-6 py-2 flex items-center justify-between border-t-8 border-[#FFF700] border-solid">
+      <nav className="px-12 py-3 flex items-center justify-between border-t-8 border-[#FFF700] border-solid">
         <Link to="/">
           <div className="inline-flex gap-2 items-center">
             <span className="">

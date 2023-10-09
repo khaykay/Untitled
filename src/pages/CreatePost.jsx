@@ -35,7 +35,7 @@ const CreatePost = ({ isAuth }) => {
       author: { name: auth.currentUser.displayName, id: auth.currentUser.uid },
     });
     navigate("/");
-    console.log("worked");
+    // console.log("worked");
   };
 
   //protected router

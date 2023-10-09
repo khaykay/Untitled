@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 const Login = ({ setIsAuth }) => {
   let navigate = useNavigate();
 
+  // Function to handle login
   const signInWithGoogle = () => {
     signInWithPopup(auth, provider).then((result) => {
       localStorage.setItem("isAuth", true);
@@ -15,10 +16,6 @@ const Login = ({ setIsAuth }) => {
   };
   return (
     <div className="min-h-screen">
-      {/* <p className="">Sign In With Google to Continue</p>
-      <button className="" onClick={signInWithGoogle}>
-        Sign in with Google
-      </button> */}
       <div
         class="flex flex-col items-center justify-center h-full"
         // style={{ height: "calc(100vh-70px)", backgroundColor: "green" }}
