@@ -1,7 +1,14 @@
-import { getDocs, collection, Timestamp } from "firebase/firestore";
+import {
+  getDocs,
+  collection,
+  Timestamp,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import and from "/and.svg";
+import arrow from "/arrow.svg";
 
 const Home = () => {
   const [postLists, setPostLists] = useState([]);
@@ -52,37 +59,158 @@ const Home = () => {
     };
     getPosts();
   }, []);
-  // console.log(postLists);
+  console.log(postLists);
+
+  //delete post
+  const deletePost = async (id) => {
+    try {
+      const postDoc = doc(db, "posts", id);
+      await deleteDoc(postDoc);
+
+      // Update the local state after successful deletion
+      setPostLists((prevPostLists) => {
+        return prevPostLists.filter((post) => post.id !== id);
+      });
+    } catch (error) {
+      console.error("Error deleting post:", error);
+    }
+  };
+
   return (
-    <div className="px-12 py-2 mt-6">
+    <div className="px-8 md:px-16 py-2 mt-10">
       <header className="border-solid border-b-2 pb-4">
-        <h2 className="text-4xl">
+        <h2 className="text-3xl md:text-4xl">
           The Journal: Design Resources
           <span className="">
             <img
               src={and}
               alt=""
-              className="h-8 w-8 md:h-9 md:w- inline mx-2"
+              className="h-8 w-8 md:h-9 md:w- inline mx-2 "
             />
           </span>
           Interviews
         </h2>
       </header>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {postLists &&
           postLists.map((post, index) => {
             return (
               <div
-                className={index === 0 ? "col-span-full" : "col-span-1"}
+                className={
+                  index === 0
+                    ? "col-span-full   mt-8 mb-5 rounded-tl-[80px] relative"
+                    : "col-span-1"
+                }
                 key={post.id}
               >
-                <div className="bg-gray-200 p-4">
+                <article
+                  className={
+                    index === 0
+                      ? "border-solid  bg-gray-200 h-[400px] rounded-tl-[80px] relative"
+                      : "bg-gray-200  h-[350px]"
+                  }
+                >
+                  <span className="">
+                    <img
+                      src={post.postDetails?.thumbnail}
+                      alt=""
+                      className={
+                        index === 0
+                          ? "border-solid border-black border-[1.5px] w-full  h-full rounded-tl-[80px] relative"
+                          : "h-[200px] w-full object-cover border-solid border-black border-[1.5px]"
+                      }
+                    />
+                  </span>
                   {/* Assuming the background color and padding are for styling purposes */}
-                  {post.postDetails?.title}
-                  {post.timestamp}
-                  {post.author.name}
-                </div>
+                  <div
+                    className={
+                      index === 0
+                        ? "w-full flex justify-center text-white absolute bottom-6"
+                        : ""
+                    }
+                  >
+                    <div
+                      className={
+                        index === 0
+                          ? "   w-[95%] bg-opacity-20 bg-blur-lg bg-gray-200 bg-clip-padding backdrop-filter backdrop-blur-md border-[1.5px] border-white border-solid p-6 "
+                          : ""
+                      }
+                    >
+                      <span className="flex relative">
+                        <h3
+                          className={
+                            index === 0
+                              ? "capitalize pb-4 font-semibold"
+                              : "mt-4 mb-2 font-semibold capitalize text-sm  "
+                          }
+                        >
+                          {" "}
+                          {post.postDetails?.title}
+                        </h3>
+                        <span
+                          className={
+                            index === 0
+                              ? "hidden"
+                              : "inline-flex  my-4 items-center absolute right-0"
+                          }
+                        >
+                          <img src={arrow} alt="arrow" className="h-4 " />
+                        </span>
+                      </span>
+                      <div className="max-w-prose">
+                        <p
+                          className={
+                            index === 0
+                              ? "hidden"
+                              : "line-clamp-3 text-xs mb-3 "
+                          }
+                        >
+                          {post.postDetails?.postText}
+                        </p>
+                      </div>
+                      <span className={index === 0 ? "flex gap-x-8" : "hidden"}>
+                        <span
+                          className={index === 0 ? "flex flex-col gap-y-1" : ""}
+                        >
+                          <span className="text-[10px] font-semibold">
+                            Written by{" "}
+                          </span>
+                          <span className="text-xs font-semibold">
+                            {post.author.name}
+                          </span>
+                        </span>
+                        <span
+                          className={index === 0 ? "flex flex-col gap-y-1" : ""}
+                        >
+                          <span className="text-[10px] font-semibold">
+                            Published on
+                          </span>
+                          <span className="text-xs font-semibold">
+                            {post.timestamp}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="flex gap-x-2">
+                        {post?.postDetails?.tags?.map((tag, i) => (
+                          <span
+                            className={
+                              index === 0
+                                ? "border border-solid border-white px-2 rounded-xl text-xs  capitalize "
+                                : "border border-solid border-black px-2 rounded-xl text-xs  capitalize"
+                            }
+                            key={i}
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </span>
+                    </div>
+                  </div>
+                  {/* <span className="mx-3" onClick={() => deletePost(post.id)}>
+                    X
+                  </span> */}
+                </article>
               </div>
             );
           })}

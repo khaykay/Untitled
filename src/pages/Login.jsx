@@ -15,11 +15,8 @@ const Login = ({ setIsAuth }) => {
     });
   };
   return (
-    <div className="min-h-screen">
-      <div
-        class="flex flex-col items-center justify-center h-full"
-        // style={{ height: "calc(100vh-70px)", backgroundColor: "green" }}
-      >
+    <div className="min-h-screen flex items-center justify-center">
+      <div>
         <h3 class="text-2xl font-semibold mb-6">Sign in with Google</h3>
         <button
           onClick={signInWithGoogle}
