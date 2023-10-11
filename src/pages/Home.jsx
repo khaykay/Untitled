@@ -15,13 +15,23 @@ const Home = () => {
   const postsCollectionRef = collection(db, "posts");
 
   // Query documents and order them by the 'timestamp' field in descending order
+  // const sortPostByRecent = (array) => {
+  //   return array.sort((a, b) => {
+  //     const timeA = new Date(a.timestamp);
+  //     const timeB = new Date(b.timestamp);
+  //     return timeB.getTime() - timeA.getTime();
+  //   });
+  // };
   const sortPostByRecent = (array) => {
     return array.sort((a, b) => {
-      const timeA = new Date(a.timestamp);
-      const timeB = new Date(b.timestamp);
+      const timeA =
+        a.timestamp instanceof Date ? a.timestamp : new Date(a.timestamp);
+      const timeB =
+        b.timestamp instanceof Date ? b.timestamp : new Date(b.timestamp);
       return timeB.getTime() - timeA.getTime();
     });
   };
+
   //fetch posts from firebase
   useEffect(() => {
     const getPosts = async () => {
@@ -59,6 +69,53 @@ const Home = () => {
     };
     getPosts();
   }, []);
+
+  //fetch posts from firebase
+  // useEffect(() => {
+  //   const getPosts = async () => {
+  //     try {
+  //       const data = await getDocs(postsCollectionRef);
+
+  //       const postsData = sortPostByRecent(
+  //         data.docs.map((doc) => {
+  //           const post = doc.data();
+  //           const options = {
+  //             year: "numeric",
+  //             month: "long",
+  //             day: "numeric",
+  //           };
+  //           return {
+  //             ...post,
+  //             timestamp: new Timestamp(
+  //               post.postDetails.timestamp.seconds,
+  //               post.postDetails.timestamp.nanoseconds
+  //             )
+  //               .toDate()
+  //               .toLocaleString("en-US", options),
+  //             id: doc.id,
+  //           };
+  //         })
+  //       );
+
+  //       // Store the posts data in local storage
+  //       localStorage.setItem("postsData", JSON.stringify(postsData));
+
+  //       setPostLists(postsData);
+  //     } catch (error) {
+  //       console.error("Error fetching posts:", error);
+  //     }
+  //   };
+
+  //   // Check if postsData is available in local storage
+  //   const storedPostsData = localStorage.getItem("postsData");
+  //   if (storedPostsData) {
+  //     setPostLists(JSON.parse(storedPostsData));
+  //   } else {
+  //     // Fetch data from Firebase if not available in local storage
+  //     getPosts();
+  //   }
+  // }, []);
+
   console.log(postLists);
 
   //delete post
@@ -108,7 +165,7 @@ const Home = () => {
                   className={
                     index === 0
                       ? "border-solid  bg-gray-200 h-[400px] rounded-tl-[80px] relative"
-                      : "bg-gray-200  h-[350px]"
+                      : " h-[335px]"
                   }
                 >
                   <span className="">
@@ -169,41 +226,71 @@ const Home = () => {
                           {post.postDetails?.postText}
                         </p>
                       </div>
-                      <span className={index === 0 ? "flex gap-x-8" : "hidden"}>
+                      <span
+                        className={
+                          index === 0 ? "flex justify-between items-center" : ""
+                        }
+                      >
+                        <span
+                          className={index === 0 ? "flex gap-x-8 " : "hidden"}
+                        >
+                          <span
+                            className={
+                              index === 0 ? "flex flex-col gap-y-1" : "hidden"
+                            }
+                          >
+                            <span className="text-[10px] font-semibold">
+                              Written by{" "}
+                            </span>
+                            <span className="text-xs font-semibold">
+                              {post.author.name}
+                            </span>
+                          </span>
+                          <span
+                            className={
+                              index === 0 ? "flex flex-col gap-y-1" : "hidden"
+                            }
+                          >
+                            <span className="text-[10px] font-semibold">
+                              Published on
+                            </span>
+                            <span className="text-xs font-semibold">
+                              {post.timestamp}
+                            </span>
+                          </span>
+                        </span>
+
                         <span
                           className={index === 0 ? "flex flex-col gap-y-1" : ""}
                         >
-                          <span className="text-[10px] font-semibold">
-                            Written by{" "}
-                          </span>
-                          <span className="text-xs font-semibold">
-                            {post.author.name}
-                          </span>
-                        </span>
-                        <span
-                          className={index === 0 ? "flex flex-col gap-y-1" : ""}
-                        >
-                          <span className="text-[10px] font-semibold">
-                            Published on
-                          </span>
-                          <span className="text-xs font-semibold">
-                            {post.timestamp}
-                          </span>
-                        </span>
-                      </span>
-                      <span className="flex gap-x-2">
-                        {post?.postDetails?.tags?.map((tag, i) => (
                           <span
                             className={
                               index === 0
-                                ? "border border-solid border-white px-2 rounded-xl text-xs  capitalize "
-                                : "border border-solid border-black px-2 rounded-xl text-xs  capitalize"
+                                ? "text-[10px] font-semibold"
+                                : "hidden"
                             }
-                            key={i}
                           >
-                            {tag}
+                            File under
                           </span>
-                        ))}
+                          <span
+                            className={
+                              index === 0 ? "flex gap-x-1" : " flex gap-x-1"
+                            }
+                          >
+                            {post?.postDetails?.tags?.map((tag, i) => (
+                              <span
+                                className={
+                                  index === 0
+                                    ? "border border-solid border-white px-2 rounded-xl text-xs  capitalize "
+                                    : "border border-solid border-black px-2 rounded-xl text-xs  capitalize"
+                                }
+                                key={i}
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </span>
+                        </span>
                       </span>
                     </div>
                   </div>

@@ -113,19 +113,19 @@ const CreatePost = ({ isAuth }) => {
   }, []);
 
   return (
-    <div className="flex gap-y-3 h-full">
-      <div className="basis-1/2 bg-slate-600 h-full flex flex-col">
-        <h2>Create a Post</h2>
-
-        <span className="">
-          <label htmlFor="logo" className="text-xs text-slate-500">
-            Logo
-          </label>
-          <input
-            type="file"
-            name="logo"
-            onChange={getThumbnail}
-            className="  border py-2 pr-1 rounded-lg text-xs text-slate-500 border-solid
+    <div className="flex gap-y-3 h-[90%] bg-slate-400 items-center">
+      <div className="basis-1/2 h-full flex flex-col items-center justify-center">
+        <h2 className="mb-4 font-mono font-semibold text-2xl">Create a Post</h2>
+        <div className=" bg-white h-[80%] flex flex-col w-[80%] rounded-xl shadow-md px-8 py-6 gap-4">
+          <span className="flex flex-col">
+            <label htmlFor="logo" className="text-xs text-slate-500 ">
+              Thumbnail
+            </label>
+            <input
+              type="file"
+              name="logo"
+              onChange={getThumbnail}
+              className="  border py-2 pr-1 rounded-lg text-xs text-slate-500 border-solid
                 file:mr-2 file:ml-1 file:py-2 file:px-3
                 file:rounded-full file:border-0
                 file:text-xs file:font-semibold
@@ -135,63 +135,79 @@ const CreatePost = ({ isAuth }) => {
                 md:file:mr-1
                 md:file:px-2 
               "
-          />
-        </span>
-        <div>
-          <label htmlFor="title">Title</label>
-          <input
-            id="title"
-            type="text"
-            name="title"
-            placeholder="Title"
-            onChange={handleChange}
-            className="peer form-input rounded-lg border-solid"
-          />
-        </div>
-        <div>
-          <label htmlFor="postText">Post</label>
-          <textarea
-            id="postText"
-            name="postText"
-            onChange={handleChange}
-            className="form-textarea rounded-lg border-solid"
-          />
-        </div>
-        <div className="">
-          <div className="border border-solid border-blue-950 ">
-            {tags.map((tag, index) => (
-              <span
-                key={index}
-                className="inline-block bg-gray-200 py-1 px-[6px] rounded-xl"
-              >
-                {tag}
-                <span
-                  className=" inline-flex bg-gray-600 h-5 w-5 justify-center items-center rounded-xl ml-[0.5em] text-white"
-                  onClick={() => {
-                    // Remove the tag when the 'x' is clicked
-                    setTags(tags.filter((_, i) => i !== index));
-                  }}
-                >
-                  x
-                </span>
-              </span>
-            ))}
+            />
+          </span>
+          <div className="flex flex-col">
+            <label htmlFor="title" className="text-xs text-slate-500 ">
+              Title
+            </label>
             <input
-              id="tags"
+              id="title"
               type="text"
-              name="tags"
-              placeholder="Add Tags"
-              value={tagsInput}
-              onChange={(e) => setTagsInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="form-input"
+              name="title"
+              placeholder="Title"
+              onChange={handleChange}
+              className="peer form-input rounded-lg border-solid placeholder:text-xs text-sm"
             />
           </div>
-          <div>
-            <p>Remaining Tags: {4 - tags.length}</p>
+          <div className="flex flex-col">
+            <label htmlFor="postText" className="text-xs text-slate-500 ">
+              Post Content
+            </label>
+            <textarea
+              id="postText"
+              name="postText"
+              placeholder="Content goes here ..."
+              onChange={handleChange}
+              className="form-textarea rounded-lg border-solid h-[100px] placeholder:text-xs text-sm"
+            />
+          </div>
+          <div className="">
+            <div className="border border-solid  rounded-lg ">
+              {tags.map((tag, index) => (
+                <span
+                  key={index}
+                  className="inline-block bg-gray-200 py-1 px-[6px] rounded-xl text-xs mx-1"
+                >
+                  {tag}
+                  <span
+                    className=" inline-flex bg-gray-600 h-5 w-5 justify-center items-center rounded-xl ml-[0.5em] text-white"
+                    onClick={() => {
+                      // Remove the tag when the 'x' is clicked
+                      setTags(tags.filter((_, i) => i !== index));
+                    }}
+                  >
+                    x
+                  </span>
+                </span>
+              ))}
+              <input
+                id="tags"
+                type="text"
+                name="tags"
+                placeholder="Add Tags"
+                value={tagsInput}
+                onChange={(e) => setTagsInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                className="form-input  placeholder:text-xs text-sm w-full focus:mt-2 "
+              />
+            </div>
+            <div>
+              <p className="text-xs text-slate-500">
+                Remaining Tags: {4 - tags.length}
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-4 flex items-center justify-center text-sm ">
+            <span
+              onClick={createPost}
+              className="w-fit bg-slate-400 px-4 py-2 rounded-md"
+            >
+              Publish Post
+            </span>
           </div>
         </div>
-        <button onClick={createPost}>Submit Post</button>
       </div>
       <div>Output</div>
     </div>

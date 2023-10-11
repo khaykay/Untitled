@@ -22,7 +22,7 @@ function App() {
     });
   };
   return (
-    <Router>
+    <Router className="antialiased">
       <nav className="px-8 md:px-16 py-3 flex items-center justify-between border-t-8 border-[#FFF700] border-solid">
         <Link to="/">
           <div className="inline-flex gap-2 items-center">

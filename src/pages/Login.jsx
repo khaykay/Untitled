@@ -15,7 +15,7 @@ const Login = ({ setIsAuth }) => {
     });
   };
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-[90%] flex items-center justify-center">
       <div>
         <h3 class="text-2xl font-semibold mb-6">Sign in with Google</h3>
         <button
