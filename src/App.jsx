@@ -34,6 +34,7 @@ function App() {
             </span>
           </div>
         </Link>
+        <input type="text" className="border border-solid " />
 
         {!isAuth ? (
           <Link to="/login">
